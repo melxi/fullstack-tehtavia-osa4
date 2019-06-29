@@ -2,8 +2,8 @@ post http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-	"title": "lorem",
+	"title": "Lorem ipsum",
     "author": "John Doe",
-    "url": "www.google.com",
+    "url": "https://www.youtube.com",
     "likes": 99
 }

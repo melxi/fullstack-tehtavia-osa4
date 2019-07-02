@@ -69,6 +69,23 @@ test('likes value is set to 0 if not defined', async () => {
     expect(likes[response.body.length - 1]).toBe(0)
 })
 
+test('a blog without title and url is not added', async () => {
+    const initialBlogs = await Blog.countDocuments()
+    const newBlog = Blog({
+        author: 'John Doe',
+        likes: 999
+    })
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+    const response = await api.get('/api/blogs')
+    
+    expect(response.body.length).toBe(initialBlogs)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })

@@ -44,10 +44,29 @@ test('a valid blog can be added', async () => {
         .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-    const contents = response.body.map(blog => blog.title)
+    const titles = response.body.map(blog => blog.title)
 
     expect(response.body.length).toBe(initialBlogs + 1)
-    expect(contents).toContain('New Blog')
+    expect(titles).toContain('New Blog')
+})
+
+test('likes value is set to 0 if not defined', async () => {
+    const newBlog = {
+        title: 'Lorem ipsum',
+        author: 'Don Juan',
+        url: 'http://www.macho.com'
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const likes = response.body.map(blog => blog.likes)
+    
+    expect(likes[response.body.length - 1]).toBe(0)
 })
 
 afterAll(async () => {

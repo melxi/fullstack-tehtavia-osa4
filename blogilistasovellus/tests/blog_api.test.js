@@ -86,6 +86,22 @@ test('a blog without title and url is not added', async () => {
     expect(response.body.length).toBe(initialBlogs)
 })
 
+test('a blog can be deleted', async () => {
+    const initialBlogs = await Blog.countDocuments()
+    const responseAtStart = await api.get('/api/blogs')
+    const blogsAtStart = responseAtStart.body.map(blog => blog)
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .expect(204)
+
+    const responseAtEnd = await api.get('/api/blogs')
+    const blogsAtEnd = responseAtEnd.body.map(blog => blog)
+
+    expect(blogsAtEnd.length).toBe(initialBlogs - 1)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })

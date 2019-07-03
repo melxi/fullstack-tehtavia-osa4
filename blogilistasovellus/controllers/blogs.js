@@ -18,10 +18,21 @@ blogsRouter.post('/', async (request, response) => {
 
   try {
     const result = await blog.save()
-    
+
     response.status(201).json(result.toJSON())
-  } catch (expection) {
-    response.status(400).json({ error: expection.message })
+  } catch (exception) {
+    response.status(400).json({ error: exception.message })
+  }
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  try {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } catch(exception) {
+    console.log(exception);
+    
+    response.status(400).json({ error: exception.message })
   }
 })
 

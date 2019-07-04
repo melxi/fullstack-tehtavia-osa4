@@ -102,6 +102,26 @@ test('a blog can be deleted', async () => {
     expect(blogsAtEnd.length).toBe(initialBlogs - 1)
 })
 
+test('blogs likes quantity can be changed', async () => {
+    const initialBlogs = await Blog.countDocuments()
+    const responseAtStart = await api.get('/api/blogs')
+    const blogsAtStart = responseAtStart.body.map(blog => blog)
+    const blogToUpdate = blogsAtStart[0]
+    
+    const blog = {
+        ...blogToUpdate,
+        likes: Math.floor(Math.random() * 1000)
+    }
+
+    await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .expect(200)
+
+    const updatedBlog = await Blog.findByIdAndUpdate(blogToUpdate.id, blog, { new: true })
+
+    expect(blogToUpdate.likes).not.toBe(updatedBlog.likes)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })

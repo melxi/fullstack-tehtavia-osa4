@@ -3,7 +3,6 @@ const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
-  
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
@@ -17,11 +16,10 @@ blogsRouter.post('/', async (request, response) => {
   })
 
   try {
-    const result = await blog.save()
-
-    response.status(201).json(result.toJSON())
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog.toJSON())
   } catch (exception) {
-    response.status(400).json({ error: exception.message })
+    response.status(400).send({ error: exception.message })
   }
 })
 
@@ -29,8 +27,8 @@ blogsRouter.delete('/:id', async (request, response) => {
   try {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
-  } catch(exception) {
-    response.status(400).json({ error: exception.message })
+  } catch (exception) {
+    response.status(400).send({ error: exception.message })
   }
 })
 
@@ -47,7 +45,7 @@ blogsRouter.put('/:id', async (request, response) => {
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     response.json(updatedBlog.toJSON())
   } catch (exception) {
-    response.status(400).json({ error: exception.message })
+    response.status(400).send({ error: exception.message })
   }
 })
 

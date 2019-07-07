@@ -1,10 +1,10 @@
 post http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1lbHhpIiwiaWQiOiI1ZDIwZGFlZDRlZjdmMDFlZTRmOThjY2IiLCJpYXQiOjE1NjI0OTM2Nzh9.sRgkL6SJE0k0hvg7T-N2ceO9xVc_jFJhwW4UBMgn8xI
 
 {
-	"title": "Lorem ipsum",
+	"title": "Post with authentication",
     "author": "John Doe",
     "url": "https://www.youtube.com",
-    "likes": 99,
-    "userId": "5d20daed4ef7f01ee4f98ccb"
+    "likes": 99
 }
